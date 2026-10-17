@@ -220,12 +220,32 @@ $$\text{OrderRecord} = \{\underline{\text{OrderID}}, \text{Date}, \text{CustName
 
 ---
 
-## 5. Execution & Verification Instructions
+## 5. Operational Views for Business Intelligence
+
+To shield application developers from joining raw relational structures and provide real-time reporting, the schema provisions operational views:
+
+### 5.1 Real-Time Low Stock Alert View (`v_low_stock_inventory`)
+* **Purpose:** Dynamically flags all active products whose on-hand quantity has dropped to or below their safety reorder threshold, computing the required restocking deficit.
+* **Usage:**
+  ```sql
+  SELECT * FROM v_low_stock_inventory ORDER BY stock_deficit DESC;
+  ```
+
+### 5.2 Customer Order & Spend Summary (`v_customer_order_summary`)
+* **Purpose:** Aggregates order volumes and lifetime expenditure per registered customer, returning customer metrics without requiring application-level manual joins.
+* **Usage:**
+  ```sql
+  SELECT * FROM v_customer_order_summary WHERE total_orders > 0 ORDER BY total_spend DESC;
+  ```
+
+---
+
+## 6. Execution & Verification Instructions
 
 To execute and verify this schema on your local MySQL server:
 
 1. Open your terminal or Command Prompt.
-2. Run the DDL script to create the database and tables:
+2. Run the DDL script to create the database, tables, and views:
    ```bash
    mysql -u root < schema.sql
    ```
@@ -233,13 +253,14 @@ To execute and verify this schema on your local MySQL server:
    ```bash
    mysql -u root < seed_data.sql
    ```
-4. Verify table creation and row counts:
+4. Verify table and view creation and row counts:
    ```sql
    USE novamart_db;
-   SHOW TABLES;
+   SHOW FULL TABLES IN novamart_db WHERE TABLE_TYPE = 'VIEW';
    SELECT 'customers' AS tbl, COUNT(*) FROM customers
    UNION ALL
    SELECT 'products', COUNT(*) FROM products
    UNION ALL
    SELECT 'orders', COUNT(*) FROM orders;
    ```
+
