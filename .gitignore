@@ -1,0 +1,19 @@
+# Compiled Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Compressed Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Environment and OS Files
+.env
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor files
+.vscode/
+.idea/
