@@ -164,3 +164,38 @@ CREATE TABLE inventory_logs (
         FOREIGN KEY (product_id) REFERENCES products(product_id) 
         ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+-- ----------------------------------------------------------------------------
+-- 9. OPERATIONAL VIEWS
+-- Simplifies complex queries and abstracts underlying normalized structures.
+-- ----------------------------------------------------------------------------
+
+-- View A: Real-time inventory replenishment alerts
+CREATE OR REPLACE VIEW v_low_stock_inventory AS
+SELECT 
+    p.product_id,
+    p.sku,
+    p.product_name,
+    c.category_name,
+    p.stock_quantity,
+    p.reorder_level,
+    (p.reorder_level - p.stock_quantity) AS stock_deficit
+FROM products p
+JOIN categories c ON p.category_id = c.category_id
+WHERE p.stock_quantity <= p.reorder_level 
+  AND p.is_active = TRUE;
+
+-- View B: Customer order history and total lifetime spending summary
+CREATE OR REPLACE VIEW v_customer_order_summary AS
+SELECT 
+    c.customer_id,
+    c.first_name,
+    c.last_name,
+    c.email,
+    COUNT(o.order_id) AS total_orders,
+    COALESCE(SUM(o.total_amount), 0.00) AS total_spend,
+    MAX(o.order_date) AS last_order_date
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name, c.email;
+
