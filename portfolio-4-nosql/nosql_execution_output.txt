@@ -1,0 +1,34 @@
+﻿===========================================================================
+NOVAMART NOSQL DOCUMENT STORE ENGINE VERIFICATION (MongoDB Simulation)
+Dataset: Polymorphic E-Commerce Catalog & Embedded Customer Reviews
+===========================================================================
+
+===========================================================================
+DEMO 1: POLYMORPHIC ATTRIBUTE FILTERING (Laptops with RAM >= 16GB)
+===========================================================================
+Product: Apple MacBook Pro 14 M3 Max (Apple)
+  Price: NGN 2,850,000.00
+  Specs: RAM=36GB | CPU=Apple M3 Max (14-core CPU, 30-core GPU) | Storage=1000GB
+  Stock: 10 units available
+
+===========================================================================
+DEMO 2: FACETED TAG & RATING SEARCH (Electronics with 'titanium' or 'm3-max')
+===========================================================================
+Product: Apple iPhone 15 Pro | Rating: 4.8 Stars | Tags: ['flagship', 'ios', 'titanium', 'usb-c', 'pro-camera']
+Product: Apple MacBook Pro 14 M3 Max | Rating: 5.0 Stars | Tags: ['laptop', 'm3-max', 'apple-silicon', 'workstation', 'creative-pro']
+
+===========================================================================
+DEMO 3: ATOMIC EMBEDDED REVIEW UPDATE ($push and $inc simulation)
+===========================================================================
+Before Update: Reviews Count = 3, Avg Rating = 4.8
+After  Update: Reviews Count = 4, Avg Rating = 4.88
+Newly Appended Review: "Camera in low light is mind blowing" by Zainab Dahiru (Rating: 5.0 Stars)
+
+===========================================================================
+DEMO 4: MONGODB AGGREGATION PIPELINE (Category Satisfaction & Stock Metrics)
+===========================================================================
+Category                  | Items  | Avg Rating  | Total Reviews | Stock Units
+---------------------------------------------------------------------------
+Electronics               | 2      | 4.94        | 6             | 34
+Groceries & Provisions    | 1      | 4.9         | 2             | 100
+Fashion & Apparel         | 1      | 4.7         | 1             | 40
