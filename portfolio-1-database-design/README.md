@@ -253,7 +253,11 @@ To execute and verify this schema on your local MySQL server:
    ```bash
    mysql -u root < seed_data.sql
    ```
-4. Verify table and view creation and row counts:
+4. Run the integrity constraint and view verification script:
+   ```bash
+   mysql -u root < verify_constraints.sql
+   ```
+5. Verify table and view creation and row counts:
    ```sql
    USE novamart_db;
    SHOW FULL TABLES IN novamart_db WHERE TABLE_TYPE = 'VIEW';
@@ -263,4 +267,5 @@ To execute and verify this schema on your local MySQL server:
    UNION ALL
    SELECT 'orders', COUNT(*) FROM orders;
    ```
+
 
