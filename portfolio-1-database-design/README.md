@@ -268,4 +268,15 @@ To execute and verify this schema on your local MySQL server:
    SELECT 'orders', COUNT(*) FROM orders;
    ```
 
+---
+
+## 7. Verified Terminal Execution Evidence
+
+### Screenshot 1: Relational Schema & Table Creation
+![Relational Schema & Table Creation](./screenshots/01_schema_and_tables.png)
+
+### Screenshot 2: Operational Views Verification
+![Operational Views Verification](./screenshots/02_operational_views.png)
+
+
 
