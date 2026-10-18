@@ -213,3 +213,20 @@ EXPLAIN ANALYZE OUTPUT (WITH COVERING INDEX):
 1. **Composite Index Column Order Rule:** In B-Tree indexes, columns filtered with equality (`=`) must precede columns filtered with range operators (`BETWEEN`, `<`, `>`). Placing `order_status` before `order_date` allowed MySQL to seek directly to the matching status and scan only the date range.
 2. **Eliminating Sorting Overhead:** Index ordering matching the `ORDER BY` clause bypasses buffer allocations and temporary disk sorts, yielding massive latency savings under high concurrent load.
 3. **Index Trade-offs:** While indexes drastically accelerate read throughput, each index introduces minor write overhead during `INSERT`, `UPDATE`, and `DELETE`. In NovaMart, composite indexes were strategically placed on high-frequency customer portal endpoints while avoiding redundant duplicate indexes.
+
+---
+
+## 6. Execution & Benchmark Instructions
+
+To reproduce the queries and automated EXPLAIN ANALYZE index tuning benchmark:
+
+1. Execute the multi-table analytical business queries:
+   ```bash
+   mysql -u root < queries.sql
+   ```
+2. Run the automated index tuning benchmark script:
+   ```bash
+   mysql -u root < benchmark_optimization.sql
+   ```
+3. Inspect `query_results.txt` for verified execution timing and profiling outputs.
+
