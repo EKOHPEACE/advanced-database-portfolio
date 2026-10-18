@@ -223,3 +223,16 @@ To execute and verify the transaction models and concurrency proofs:
    ```
 4. Check `concurrency_output.txt` and `transaction_results.txt` for real execution logs and verification evidence.
 
+---
+
+## 8. Verified Execution Evidence & Simulation Screenshots
+
+### Screenshot 1: ACID Rollback Verification
+*Demonstrates transaction rollback after simulated payment failure, proving stock restored and zero orphaned records.*
+![ACID Rollback Verification](./screenshots/01_acid_rollback_verification.png)
+
+### Screenshot 2: Multi-Threaded Row-Lock Simulation Log
+*Proves Session 2 is deterministically blocked in a 2.64s lock wait until Session 1 commits, ensuring serializable consistency and preventing lost updates.*
+![Row-Lock Concurrency Simulation](./screenshots/02_concurrency_lock_wait.png)
+
+
