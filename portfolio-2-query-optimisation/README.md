@@ -230,3 +230,16 @@ To reproduce the queries and automated EXPLAIN ANALYZE index tuning benchmark:
    ```
 3. Inspect `query_results.txt` for verified execution timing and profiling outputs.
 
+---
+
+## 7. Verified Execution Evidence & Profiling Screenshots
+
+### Screenshot 1: Baseline EXPLAIN ANALYZE (Before Optimization)
+*Shows expensive Filesort (`Sort: o.order_date DESC`, cost=204.93) and 25.47ms execution latency.*
+![Baseline EXPLAIN ANALYZE](./screenshots/01_explain_analyze_baseline.png)
+
+### Screenshot 2: Optimized EXPLAIN ANALYZE (Composite B-Tree Index)
+*Shows complete elimination of the sort step, cost reduction to 652.86 (-28.7%), and 14.74ms execution time (42.1% speedup).*
+![Optimized EXPLAIN ANALYZE](./screenshots/02_explain_analyze_optimized.png)
+
+
