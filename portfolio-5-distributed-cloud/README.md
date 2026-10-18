@@ -150,4 +150,8 @@ docker-compose -f docker-compose-distributed.yml ps
 
 # 3. Configure replication on replica node
 docker exec -i novamart-mysql-primary mysql -u root -pRootPassword2026! < replication_setup.sql
+
+# 4. Verify replication health and GTID synchronization
+docker exec -i novamart-mysql-replica mysql -u root -pRootPassword2026! < verify_replication_health.sql
 ```
+
