@@ -155,3 +155,16 @@ docker exec -i novamart-mysql-primary mysql -u root -pRootPassword2026! < replic
 docker exec -i novamart-mysql-replica mysql -u root -pRootPassword2026! < verify_replication_health.sql
 ```
 
+---
+
+## 6. Verified Distributed Cluster Screenshots
+
+### Screenshot 1: Docker Compose Distributed Cluster Topology
+*Shows all three multi-node containers (primary writer, read replica, and in-memory Redis cache) in `Up (healthy)` state.*
+![Docker Compose Distributed Topology](./screenshots/01_docker_cluster_health.png)
+
+### Screenshot 2: GTID Semi-Synchronous Replication Status
+*Confirms `Replica_IO_Running: Yes`, `Replica_SQL_Running: Yes`, `Seconds_Behind_Source: 0`, and GTID auto-positioning active.*
+![GTID Semi-Sync Replication](./screenshots/02_replication_gtid_status.png)
+
+
