@@ -158,3 +158,24 @@ In addition to MongoDB, NovaMart utilizes **Redis 5.0** for memory-speed operati
 ## 7. Consistency Models & CAP Theorem Trade-Offs
 * **Relational MySQL:** Prioritizes **Consistency and Partition Tolerance (CP)** for financial transactions. If a network split occurs, money transfers are blocked rather than recorded incorrectly.
 * **Catalog MongoDB / Redis:** Configured for **Availability and Partition Tolerance (AP)** with **Eventual Consistency**. If a product review or rating takes 200ms to propagate to read replicas, shoppers still view product details without disruption.
+
+---
+
+## 8. Execution & Reproduction Instructions
+
+To execute and verify the NoSQL document and in-memory key-value implementations:
+
+1. **MongoDB Shell / Mongosh Execution:**
+   ```bash
+   mongosh < mongodb_queries.js
+   ```
+2. **Automated Document Model Simulation (No MongoDB installation required):**
+   ```bash
+   python run_nosql_demo.py
+   ```
+3. **Redis Caching Patterns Execution:**
+   ```bash
+   cat redis_cache_patterns.redis | redis-cli
+   ```
+4. Review `nosql_execution_output.txt` for verified execution results and metrics.
+
