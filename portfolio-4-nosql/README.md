@@ -179,3 +179,16 @@ To execute and verify the NoSQL document and in-memory key-value implementations
    ```
 4. Review `nosql_execution_output.txt` for verified execution results and metrics.
 
+---
+
+## 9. Verified Execution Evidence & Simulation Screenshots
+
+### Screenshot 1: MongoDB Document Aggregation Pipeline
+*Shows mongosh aggregation execution grouping categories by average rating, total customer reviews, and warehouse stock.*
+![MongoDB Aggregation Pipeline](./screenshots/01_mongodb_aggregation.png)
+
+### Screenshot 2: Redis In-Memory Key-Value Caching Suite
+*Demonstrates Redis CLI session cart hashes with 7-day TTL, atomic stock decrement in RAM (`DECRBY`), and serialized JSON cache hits.*
+![Redis Caching Terminal](./screenshots/02_redis_caching_terminal.png)
+
+
