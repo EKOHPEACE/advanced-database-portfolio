@@ -57,7 +57,21 @@ This repository is organized into five progressive technical activities as presc
 
 ---
 
-## 3. Technology Stack
+## 3. Quick Start & Test Verification Cheat Sheet
+
+Each portfolio activity includes standalone verification scripts that can be directly executed against MySQL, MongoDB, or Docker:
+
+| Portfolio | Primary Deliverable | One-Command Verification Script |
+| :--- | :--- | :--- |
+| **Portfolio 1** | Relational DDL & Integrity Views | `mysql -u root < portfolio-1-database-design/verify_constraints.sql` |
+| **Portfolio 2** | Query Optimization & Indexing | `mysql -u root < portfolio-2-query-optimisation/benchmark_optimization.sql` |
+| **Portfolio 3** | ACID Transactions & Concurrency | `mysql -u root < portfolio-3-transactions-concurrency/deadlock_simulation.sql` |
+| **Portfolio 4** | Document NoSQL & In-Memory Redis | `python portfolio-4-nosql/run_nosql_demo.py` |
+| **Portfolio 5** | Distributed GTID Cluster & Replicas | `docker exec -i novamart-mysql-replica mysql -u root -pRootPassword2026! < portfolio-5-distributed-cloud/verify_replication_health.sql` |
+
+---
+
+## 4. Technology Stack
 * **Relational RDBMS Engine:** MySQL 8.0.30 (InnoDB Storage Engine with full ACID support)
 * **NoSQL Engine:** MongoDB / JSON Document Model
 * **Execution & Profiling Tools:** MySQL CLI, `EXPLAIN ANALYZE`, HeidiSQL / DBeaver
@@ -65,7 +79,7 @@ This repository is organized into five progressive technical activities as presc
 
 ---
 
-## 4. Academic Integrity & AI Use Declaration
+## 5. Academic Integrity & AI Use Declaration
 This practical portfolio represents independent work designed and verified by **Peace Ekoh (ID: 301866431)**. 
 Where artificial intelligence tools were used as learning aids:
 1. **Tool Used:** Google DeepMind / Antigravity AI Assistant.
