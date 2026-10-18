@@ -29,7 +29,7 @@ This directory references the official continuous assessment reports and submiss
    *MD5 checksums and artifact manifest for archival validation.*
 
 5. **Study Guide & Oral Defense Walkthrough:**  
-   [`../STUDY_GUIDE_AND_WALKTHROUGH.md`](../STUDY_GUIDE_AND_WALKTHROUGH.md)  
+   [`../Ekoh_Peace_301866431_STUDY_GUIDE_AND_WALKTHROUGH.md`](../Ekoh_Peace_301866431_STUDY_GUIDE_AND_WALKTHROUGH.md)  
    *Complete technical manual, conceptual analogies, and viva preparation guide.*
 
 ---
