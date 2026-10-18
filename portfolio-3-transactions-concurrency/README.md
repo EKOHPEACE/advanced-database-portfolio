@@ -202,3 +202,24 @@ When two transactions create a circular dependency (Transaction A holds Lock 1 a
 * MySQL InnoDB's background **Deadlock Detector** automatically identifies the cycle via a wait-for graph.
 * The engine selects the transaction with the fewest modified rows as the victim, issues an `ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction`, and rolls it back immediately.
 * This allows the other transaction to proceed without system-wide hanging. In application code, deadlocked transactions are handled with exponential backoff retry algorithms.
+
+---
+
+## 7. Execution & Reproduction Instructions
+
+To execute and verify the transaction models and concurrency proofs:
+
+1. **ACID Demonstrations (Commit, Rollback, Savepoints):**
+   ```bash
+   mysql -u root < transactions.sql
+   ```
+2. **Deterministic Locking & Deadlock Prevention:**
+   ```bash
+   mysql -u root < deadlock_simulation.sql
+   ```
+3. **Multi-Threaded Row-Lock Simulation:**
+   ```bash
+   python simulate_concurrency.py
+   ```
+4. Check `concurrency_output.txt` and `transaction_results.txt` for real execution logs and verification evidence.
+
