@@ -263,10 +263,14 @@ To execute and verify this schema on your local MySQL server:
    SHOW FULL TABLES IN novamart_db WHERE TABLE_TYPE = 'VIEW';
    SELECT 'customers' AS tbl, COUNT(*) FROM customers
    UNION ALL
-   SELECT 'products', COUNT(*) FROM products
-   UNION ALL
    SELECT 'orders', COUNT(*) FROM orders;
    ```
+6. Or execute the master automated test runner from the repository root:
+   ```bash
+   ..\verify_all_portfolios.bat
+   ```
+
+
 
 ---
 

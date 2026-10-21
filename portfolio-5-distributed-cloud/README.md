@@ -153,7 +153,11 @@ docker exec -i novamart-mysql-primary mysql -u root -pRootPassword2026! < replic
 
 # 4. Verify replication health and GTID synchronization
 docker exec -i novamart-mysql-replica mysql -u root -pRootPassword2026! < verify_replication_health.sql
+
+# 5. Alternatively, execute master automated test runner from repository root:
+..\verify_all_portfolios.bat
 ```
+
 
 ---
 

@@ -222,6 +222,11 @@ To execute and verify the transaction models and concurrency proofs:
    python simulate_concurrency.py
    ```
 4. Check `concurrency_output.txt` and `transaction_results.txt` for real execution logs and verification evidence.
+5. Alternatively, execute the master automated test runner from the repository root:
+   ```bash
+   ..\verify_all_portfolios.bat
+   ```
+
 
 ---
 

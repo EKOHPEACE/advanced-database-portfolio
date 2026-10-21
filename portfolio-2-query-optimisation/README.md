@@ -229,6 +229,11 @@ To reproduce the queries and automated EXPLAIN ANALYZE index tuning benchmark:
    mysql -u root < benchmark_optimization.sql
    ```
 3. Inspect `query_results.txt` for verified execution timing and profiling outputs.
+4. Alternatively, execute the master automated test runner from the repository root:
+   ```bash
+   ..\verify_all_portfolios.bat
+   ```
+
 
 ---
 

@@ -178,6 +178,11 @@ To execute and verify the NoSQL document and in-memory key-value implementations
    cat redis_cache_patterns.redis | redis-cli
    ```
 4. Review `nosql_execution_output.txt` for verified execution results and metrics.
+5. Alternatively, execute the master automated test runner from the repository root:
+   ```bash
+   ..\verify_all_portfolios.bat
+   ```
+
 
 ---
 
