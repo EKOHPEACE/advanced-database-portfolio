@@ -32,6 +32,11 @@ This directory references the official continuous assessment reports and submiss
    [`../Ekoh_Peace_301866431_STUDY_GUIDE_AND_WALKTHROUGH.md`](../Ekoh_Peace_301866431_STUDY_GUIDE_AND_WALKTHROUGH.md)  
    *Complete technical manual, conceptual analogies, and viva preparation guide.*
 
+6. **Automated Master Test Runner:**  
+   [`../verify_all_portfolios.ps1`](../verify_all_portfolios.ps1) / [`../verify_all_portfolios.bat`](../verify_all_portfolios.bat)  
+   *Automated script executing health checks across all five portfolio activities.*
+
+
 ---
 
 ## Academic Integrity & Declaration

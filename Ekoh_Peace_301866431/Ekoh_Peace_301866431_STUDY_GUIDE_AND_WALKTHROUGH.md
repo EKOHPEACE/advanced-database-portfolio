@@ -950,4 +950,12 @@ If the lecturer calls you in for an oral verification, here are the most likely 
 
 ---
 
+**Q8: "How do you test and verify all five portfolio activities at once?"**
+
+*Answer:*
+> "I built an automated master test suite runner — `verify_all_portfolios.ps1` (with a Windows companion `verify_all_portfolios.bat`). Running it immediately performs automated integrity checks across all five portfolio directories: verifying the 3NF relational schema DDL and constraint test scripts in Portfolio 1, the analytical queries and EXPLAIN ANALYZE benchmark runners in Portfolio 2, the ACID transaction suites and Python row-lock concurrency simulations in Portfolio 3, the polymorphic JSON document models, MongoDB aggregation pipelines, and Redis caching scripts in Portfolio 4, and the Docker Compose cluster topology, GTID semi-sync scripts, and replica health monitor in Portfolio 5. It outputs a 5/5 pass summary."
+
+---
+
 *This guide was written to accompany the MIT 8103 Advanced Database Systems Practical Portfolio by Peace Ekoh (ID: 301866431). Every query, simulation, and measurement described here was executed and verified on MySQL 8.0.30 and Python 3.10 locally.*
+

@@ -59,6 +59,17 @@ This repository is organized into five progressive technical activities as presc
 
 ## 3. Quick Start & Test Verification Cheat Sheet
 
+### 3.1 One-Command Master Test Suite
+To automatically verify all 5 portfolio modules and artifacts at once:
+```powershell
+# In PowerShell:
+.\verify_all_portfolios.ps1
+
+# Or in Windows CMD / Double-Click:
+verify_all_portfolios.bat
+```
+
+### 3.2 Individual Activity Test Scripts
 Each portfolio activity includes standalone verification scripts that can be directly executed against MySQL, MongoDB, or Docker:
 
 | Portfolio | Primary Deliverable | One-Command Verification Script |
