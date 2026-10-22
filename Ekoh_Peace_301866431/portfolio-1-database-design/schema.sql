@@ -162,7 +162,8 @@ CREATE TABLE inventory_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_log_product 
         FOREIGN KEY (product_id) REFERENCES products(product_id) 
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_log_product_date (product_id, created_at DESC)
 ) ENGINE=InnoDB;
 
 -- ----------------------------------------------------------------------------
@@ -198,4 +199,43 @@ SELECT
 FROM customers c
 LEFT JOIN orders o ON c.customer_id = o.customer_id
 GROUP BY c.customer_id, c.first_name, c.last_name, c.email;
+
+-- View C: Enriched inventory alerts with dynamic urgency thresholds
+CREATE OR REPLACE VIEW vw_low_stock_alerts AS
+SELECT 
+    p.product_id,
+    p.sku,
+    p.product_name,
+    c.category_name,
+    p.stock_quantity,
+    p.reorder_level,
+    (p.reorder_level - p.stock_quantity) AS deficit,
+    CASE 
+        WHEN p.stock_quantity = 0 THEN 'CRITICAL: OUT OF STOCK'
+        WHEN p.stock_quantity <= p.reorder_level THEN 'WARNING: REORDER REQUIRED'
+        ELSE 'OPTIMAL STOCK'
+    END AS stock_urgency
+FROM products p
+JOIN categories c ON p.category_id = c.category_id
+WHERE p.stock_quantity <= p.reorder_level 
+  AND p.is_active = TRUE;
+
+-- View D: Customer lifetime spend and VIP loyalty tier classification
+CREATE OR REPLACE VIEW vw_customer_order_metrics AS
+SELECT 
+    c.customer_id,
+    CONCAT(c.first_name, ' ', c.last_name) AS customer_name,
+    c.email,
+    COUNT(o.order_id) AS total_orders_placed,
+    COALESCE(SUM(o.total_amount), 0.00) AS lifetime_spend,
+    CASE 
+        WHEN COALESCE(SUM(o.total_amount), 0.00) >= 100000000 THEN 'PLATINUM VIP'
+        WHEN COALESCE(SUM(o.total_amount), 0.00) >= 50000000 THEN 'GOLD'
+        WHEN COALESCE(SUM(o.total_amount), 0.00) >= 10000000 THEN 'SILVER'
+        ELSE 'STANDARD'
+    END AS customer_tier
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name, c.email;
+
 
