@@ -85,6 +85,36 @@ ORDER BY sales_volume_rank ASC;
 
 
 -- ============================================================================
+-- BUSINESS QUERY 4: Monthly Revenue Velocity & MoM Growth Analysis
+-- Business Purpose: Evaluates monthly e-commerce sales performance using 
+--                   Common Table Expressions (CTEs) and LAG() window functions.
+-- ============================================================================
+
+WITH monthly_sales AS (
+    SELECT 
+        DATE_FORMAT(order_date, '%Y-%m') AS sales_month,
+        COUNT(order_id) AS total_orders,
+        SUM(total_amount) AS monthly_revenue
+    FROM orders
+    WHERE order_status = 'DELIVERED'
+    GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+)
+SELECT 
+    sales_month,
+    total_orders,
+    FORMAT(monthly_revenue, 2) AS monthly_revenue_ngn,
+    FORMAT(LAG(monthly_revenue, 1) OVER (ORDER BY sales_month), 2) AS prior_month_revenue_ngn,
+    ROUND(
+        ((monthly_revenue - LAG(monthly_revenue, 1) OVER (ORDER BY sales_month)) / 
+        LAG(monthly_revenue, 1) OVER (ORDER BY sales_month)) * 100, 
+        2
+    ) AS mom_growth_rate_pct
+FROM monthly_sales
+ORDER BY sales_month DESC;
+
+
+
+-- ============================================================================
 -- OPTIMIZATION EXPERIMENT: Target Query for Index Tuning
 -- Target: High-frequency operational query filtering orders by date range and status.
 -- ============================================================================

@@ -113,6 +113,36 @@ ORDER BY sales_volume_rank ASC;
 
 ---
 
+### Query 4: Monthly Revenue Velocity & MoM Growth Analysis
+* **Business Objective:** Leverages Common Table Expressions (CTEs) and the `LAG()` analytical window function to track monthly delivered order volumes and Month-over-Month (MoM) revenue growth percentages.
+* **SQL Implementation:**
+```sql
+WITH monthly_sales AS (
+    SELECT 
+        DATE_FORMAT(order_date, '%Y-%m') AS sales_month,
+        COUNT(order_id) AS total_orders,
+        SUM(total_amount) AS monthly_revenue
+    FROM orders
+    WHERE order_status = 'DELIVERED'
+    GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+)
+SELECT 
+    sales_month,
+    total_orders,
+    FORMAT(monthly_revenue, 2) AS monthly_revenue_ngn,
+    FORMAT(LAG(monthly_revenue, 1) OVER (ORDER BY sales_month), 2) AS prior_month_revenue_ngn,
+    ROUND(
+        ((monthly_revenue - LAG(monthly_revenue, 1) OVER (ORDER BY sales_month)) / 
+        LAG(monthly_revenue, 1) OVER (ORDER BY sales_month)) * 100, 
+        2
+    ) AS mom_growth_rate_pct
+FROM monthly_sales
+ORDER BY sales_month DESC;
+```
+
+
+---
+
 ## 3. Query Optimization Experiment & Execution Plans
 
 To assess real-world query optimization, we selected a high-frequency customer portal query filtering orders by status and date range with sorted results:
