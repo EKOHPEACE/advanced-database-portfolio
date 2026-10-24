@@ -141,3 +141,39 @@ SELECT o.order_id, o.order_status, p.payment_method, p.payment_status, p.payment
 FROM orders o
 JOIN payments p ON o.order_id = p.order_id
 WHERE o.order_id = @sp_order_id;
+
+
+-- ============================================================================
+-- DEMONSTRATION 4: TRANSACTION ISOLATION & MVCC SNAPSHOT CONSISTENCY
+-- Business Scenario: Demonstrating REPEATABLE READ snapshot isolation to prevent
+--                   non-repeatable reads and phantom reads during financial audits.
+-- ============================================================================
+
+-- Step 1: Inspect global and session isolation settings
+SELECT 
+    @@global.transaction_isolation AS global_isolation_level,
+    @@session.transaction_isolation AS session_isolation_level;
+
+-- Step 2: Begin consistent snapshot read transaction
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION WITH CONSISTENT SNAPSHOT;
+
+-- Step 3: First audit read of completed transactions
+SELECT 
+    COUNT(order_id) AS snapshot_delivered_orders,
+    COALESCE(SUM(total_amount), 0.00) AS snapshot_total_revenue
+FROM orders 
+WHERE order_status = 'DELIVERED';
+
+-- Step 4: Under MVCC (Multi-Version Concurrency Control), InnoDB establishes 
+-- a read view at the start of this transaction. Even if concurrent transactions 
+-- insert new rows or update statuses, subsequent reads in this transaction 
+-- will produce identical, deterministic results without acquiring table locks.
+SELECT 
+    COUNT(order_id) AS consistent_read_check,
+    COALESCE(SUM(total_amount), 0.00) AS consistent_revenue_check
+FROM orders 
+WHERE order_status = 'DELIVERED';
+
+COMMIT;
+

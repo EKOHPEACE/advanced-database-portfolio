@@ -126,6 +126,25 @@ COMMIT;
 
 ---
 
+### 3.4 Scenario 4: Consistent Snapshot Read (`START TRANSACTION WITH CONSISTENT SNAPSHOT`)
+To execute financial reconciliation without locking tables or encountering non-repeatable reads, NovaMart leverages InnoDB's **Multi-Version Concurrency Control (MVCC)** under `REPEATABLE READ`:
+
+```sql
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION WITH CONSISTENT SNAPSHOT;
+
+-- Baseline financial audit read
+SELECT COUNT(order_id) AS snapshot_delivered_orders, SUM(total_amount) AS snapshot_revenue
+FROM orders WHERE order_status = 'DELIVERED';
+
+-- Under MVCC, concurrent inserts/updates do NOT alter this read view
+COMMIT;
+```
+* **Verified Guarantee:** Deterministic read consistency across complex multi-query financial audits with zero locking overhead.
+
+---
+
+
 ## 4. Transaction Isolation Levels & Concurrency Phenomena
 
 MySQL InnoDB supports four ANSI SQL isolation levels:
