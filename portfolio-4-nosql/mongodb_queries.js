@@ -131,9 +131,44 @@ db.products.aggregate([
 
 
 // ============================================================================
-// 6. REDIS KEY-VALUE MODEL (Shopping Cart & Real-Time Stock Cache)
+// 6. ADVANCED AGGREGATION: $unwind Review Sentiment & Verified Buyer Breakdown
+// Pipeline: Unwinds embedded reviews array to calculate proportion of verified 
+//           vs. non-verified reviews and distribution of 5-star ratings.
+// ============================================================================
+db.products.aggregate([
+  { $unwind: "$reviews" },
+  {
+    $group: {
+      _id: {
+        category: "$category.primary",
+        verified_buyer: "$reviews.verified_purchase"
+      },
+      review_count: { $sum: 1 },
+      average_rating: { $avg: "$reviews.rating" },
+      five_star_reviews: {
+        $sum: { $cond: [{ $eq: ["$reviews.rating", 5] }, 1, 0] }
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      category: "$_id.category",
+      verified_buyer: "$_id.verified_buyer",
+      review_count: 1,
+      average_rating: { $round: ["$average_rating", 2] },
+      five_star_reviews: 1
+    }
+  },
+  { $sort: { category: 1, verified_buyer: -1 } }
+]);
+
+
+// ============================================================================
+// 7. REDIS KEY-VALUE MODEL (Shopping Cart & Real-Time Stock Cache)
 // Example Redis CLI Commands for session state management:
 // ============================================================================
+
 /*
 # Store ephemeral user shopping cart with 7-day TTL (Time-To-Live)
 HSET cart:session:cust_001 "PROD-TECH-001" 1

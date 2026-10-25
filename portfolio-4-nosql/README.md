@@ -144,9 +144,17 @@ Category                  | Items  | Avg Rating  | Total Reviews | Stock Units
 Electronics               | 2      | 4.94        | 6             | 34
 Groceries & Provisions    | 1      | 4.9         | 2             | 100
 Fashion & Apparel         | 1      | 4.7         | 1             | 40
+
+DEMO 5: ARRAY UNWIND & VERIFIED BUYER SATISFACTION ($unwind Simulation)
+Category                 | Buyer Status     | Reviews  | Avg Rating  | 5-Star %
+---------------------------------------------------------------------------
+Electronics              | Verified Buyer   | 6        | 4.92        | 83%
+Fashion & Apparel        | Verified Buyer   | 1        | 4.7         | 0%
+Groceries & Provisions   | Verified Buyer   | 2        | 4.9         | 50%
 ```
 
 ---
+
 
 ## 6. Key-Value Caching Model (Redis Architecture)
 In addition to MongoDB, NovaMart utilizes **Redis 5.0** for memory-speed operations:

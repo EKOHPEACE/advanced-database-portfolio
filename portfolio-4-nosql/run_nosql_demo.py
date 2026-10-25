@@ -109,6 +109,38 @@ def demo_aggregation_pipeline(catalog):
     for r in results:
         print(f"{r['category']:<25} | {r['catalog_items']:<6} | {r['avg_customer_rating']:<11} | {r['total_reviews']:<13} | {r['total_inventory']}")
 
+def demo_unwind_review_sentiment(catalog):
+    print("\n" + "=" * 75)
+    print("DEMO 5: ARRAY UNWIND & VERIFIED BUYER SATISFACTION ($unwind Simulation)")
+    print("=" * 75)
+    all_reviews = []
+    for item in catalog:
+        cat = item.get("category", {}).get("primary", "Other")
+        for r in item.get("reviews", []):
+            all_reviews.append({
+                "category": cat,
+                "rating": r.get("rating", 0),
+                "verified": r.get("verified_purchase", False)
+            })
+    
+    groups = {}
+    for r in all_reviews:
+        key = (r["category"], r["verified"])
+        if key not in groups:
+            groups[key] = {"count": 0, "ratings": [], "five_stars": 0}
+        groups[key]["count"] += 1
+        groups[key]["ratings"].append(r["rating"])
+        if r["rating"] == 5.0:
+            groups[key]["five_stars"] += 1
+            
+    print(f"{'Category':<24} | {'Buyer Status':<16} | {'Reviews':<8} | {'Avg Rating':<11} | {'5-Star %'}")
+    print("-" * 75)
+    for (cat, ver), data in sorted(groups.items(), key=lambda x: (x[0][0], not x[0][1])):
+        b_type = "Verified Buyer" if ver else "Unverified"
+        avg_r = round(sum(data["ratings"]) / len(data["ratings"]), 2)
+        pct = f"{round((data['five_stars'] / data['count']) * 100)}%"
+        print(f"{cat:<24} | {b_type:<16} | {data['count']:<8} | {avg_r:<11} | {pct}")
+
 if __name__ == "__main__":
     print("=" * 75)
     print("NOVAMART NOSQL DOCUMENT STORE ENGINE VERIFICATION (MongoDB Simulation)")
@@ -120,3 +152,5 @@ if __name__ == "__main__":
     demo_faceted_search(catalog)
     demo_embedded_review_update(catalog)
     demo_aggregation_pipeline(catalog)
+    demo_unwind_review_sentiment(catalog)
+
