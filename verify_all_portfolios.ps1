@@ -61,10 +61,10 @@ if ($p4Missing.Count -eq 0) {
 
 # --- Portfolio 5: Distributed & Cloud Databases Check ---
 Write-Host "[5/5] Verifying Portfolio 5: Distributed Cloud Architecture & GTID Replication..." -ForegroundColor Yellow
-$p5Files = @("portfolio-5-distributed-cloud/docker-compose-distributed.yml", "portfolio-5-distributed-cloud/replication_setup.sql", "portfolio-5-distributed-cloud/verify_replication_health.sql")
+$p5Files = @("portfolio-5-distributed-cloud/docker-compose-distributed.yml", "portfolio-5-distributed-cloud/replication_setup.sql", "portfolio-5-distributed-cloud/verify_replication_health.sql", "portfolio-5-distributed-cloud/failover_promotion_drill.sql")
 $p5Missing = $p5Files | Where-Object { -not (Test-Path $_) }
 if ($p5Missing.Count -eq 0) {
-    Write-Host "  -> [PASS] Docker Compose cluster topology, GTID semi-sync scripts, and replica health monitor verified." -ForegroundColor Green
+    Write-Host "  -> [PASS] Docker Compose cluster topology, GTID semi-sync scripts, replica health monitor, and failover drill verified." -ForegroundColor Green
     $testsPassed++
 } else {
     Write-Host "  -> [FAIL] Missing files: $($p5Missing -join ', ')" -ForegroundColor Red

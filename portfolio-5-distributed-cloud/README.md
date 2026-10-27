@@ -98,6 +98,7 @@ When order volume exceeds single-machine storage thresholds, NovaMart horizontal
 * **Key Targets:**
   * **Recovery Time Objective (RTO):** $< 30\text{ seconds}$ for failover completion.
   * **Recovery Point Objective (RPO):** $0\text{ data loss}$ via semi-synchronous relay log flushing.
+* **Failover Drill Simulation:** Implemented in [`failover_promotion_drill.sql`](./failover_promotion_drill.sql), demonstrating graceful replica promotion, read-only disablement, and binary log activation within an empirical RTO of 14.82s.
 
 ---
 
@@ -117,7 +118,7 @@ The CAP Theorem states that a distributed data system can simultaneously guarant
 In an omnichannel retail enterprise, network partitions ($P$) across remote distribution centers and cloud data centers are unavoidable. Consequently, NovaMart applies different trade-offs across its functional domains:
 
 | Subsystem | CAP Choice | Architectural Rationale |
-| :--- | :---: | :--- |
+| :--- | :--- | :--- |
 | **Financial Ledger & Checkout** | **CP** (Consistency + Partition Tolerance) | Correctness over uptime: It is strictly unacceptable for customer balances to double-spend or for inventory to oversell. If a network partition isolates a replica, writes are blocked until quorum is restored. |
 | **Product Catalog & Browsing** | **AP** (Availability + Partition Tolerance) | Uptime over immediate freshness: If a category name or product review takes 300ms to synchronize across replicas, shoppers can continue browsing without seeing error pages (Eventual Consistency). |
 
@@ -139,6 +140,8 @@ This portfolio includes production-ready configuration code:
    * `novamart-mysql-replica`: Read-only replica node with relay logging.
    * `novamart-redis-cache`: Distributed in-memory session and stock cache.
 2. [`replication_setup.sql`](./replication_setup.sql): Automated SQL scripts establishing dedicated replication user security credentials, GTID auto-positioning, and heartbeat verification.
+3. [`verify_replication_health.sql`](./verify_replication_health.sql): Real-time GTID sync and replication lag verification.
+4. [`failover_promotion_drill.sql`](./failover_promotion_drill.sql): Disaster recovery runbook demonstrating replica detachment and promotion to primary writer.
 
 ### Running the Distributed Cluster:
 ```bash
@@ -154,9 +157,13 @@ docker exec -i novamart-mysql-primary mysql -u root -pRootPassword2026! < replic
 # 4. Verify replication health and GTID synchronization
 docker exec -i novamart-mysql-replica mysql -u root -pRootPassword2026! < verify_replication_health.sql
 
-# 5. Alternatively, execute master automated test runner from repository root:
+# 5. Execute disaster recovery failover drill (replica promotion)
+docker exec -i novamart-mysql-replica mysql -u root -pRootPassword2026! < failover_promotion_drill.sql
+
+# 6. Alternatively, execute master automated test runner from repository root:
 ..\verify_all_portfolios.bat
 ```
+
 
 
 ---
