@@ -84,3 +84,17 @@ UNION ALL
 SELECT 'payments', COUNT(*) FROM payments
 UNION ALL
 SELECT 'inventory_logs', COUNT(*) FROM inventory_logs;
+
+-- ----------------------------------------------------------------------------
+-- TEST 7: Automated Inventory Audit Trigger Verification
+-- Expectation: Modifying stock_quantity automatically writes a delta row to inventory_logs
+-- ----------------------------------------------------------------------------
+SELECT '--- TEST 7: Testing trg_audit_product_stock_change Trigger ---' AS test_name;
+-- Demonstration workflow:
+-- 1. Inspect current stock and latest audit log:
+--    SELECT product_id, stock_quantity FROM products WHERE product_id = 1;
+-- 2. Simulate restocking action:
+--    UPDATE products SET stock_quantity = stock_quantity + 20 WHERE product_id = 1;
+-- 3. Confirm audit trail insertion:
+--    SELECT log_id, product_id, change_quantity, previous_stock, new_stock, reason, created_at
+--    FROM inventory_logs WHERE product_id = 1 ORDER BY log_id DESC LIMIT 1;

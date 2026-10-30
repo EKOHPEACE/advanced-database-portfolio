@@ -238,6 +238,10 @@ To shield application developers from joining raw relational structures and prov
   SELECT * FROM v_customer_order_summary WHERE total_orders > 0 ORDER BY total_spend DESC;
   ```
 
+### 5.3 Automated Inventory Audit Trigger (`trg_audit_product_stock_change`)
+* **Purpose:** Proactively guarantees regulatory and supply chain compliance by capturing every change in `products.stock_quantity` into the `inventory_logs` table, classifying the delta as either `ORDER_PURCHASE` (stock decrement) or `RESTOCK` (stock increment).
+* **Implementation:** Defined in `schema.sql` as an `AFTER UPDATE` row-level trigger.
+
 ---
 
 ## 6. Execution & Verification Instructions

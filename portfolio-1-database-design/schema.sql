@@ -238,4 +238,34 @@ FROM customers c
 LEFT JOIN orders o ON c.customer_id = o.customer_id
 GROUP BY c.customer_id, c.first_name, c.last_name, c.email;
 
+-- ----------------------------------------------------------------------------
+-- 10. DATABASE TRIGGERS
+-- Automated audit trailing for stock movements on products table
+-- ----------------------------------------------------------------------------
+DROP TRIGGER IF EXISTS trg_audit_product_stock_change;
 
+DELIMITER $$
+CREATE TRIGGER trg_audit_product_stock_change
+AFTER UPDATE ON products
+FOR EACH ROW
+BEGIN
+    IF OLD.stock_quantity <> NEW.stock_quantity THEN
+        INSERT INTO inventory_logs (
+            product_id,
+            change_quantity,
+            previous_stock,
+            new_stock,
+            reason
+        ) VALUES (
+            NEW.product_id,
+            (NEW.stock_quantity - OLD.stock_quantity),
+            OLD.stock_quantity,
+            NEW.stock_quantity,
+            CASE 
+                WHEN NEW.stock_quantity < OLD.stock_quantity THEN 'ORDER_PURCHASE'
+                ELSE 'RESTOCK'
+            END
+        );
+    END IF;
+END$$
+DELIMITER ;
